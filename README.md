@@ -2,6 +2,8 @@
 
 Aplicação web para apoiar a revisão de compras de um pequeno comércio. A pessoa responsável confere vendas e saldo atual, analisa uma sugestão por produto, simula mudanças na demanda e exporta o plano revisado.
 
+**[Acessar a demonstração ao vivo](https://jpmansolelli.github.io/planejador-de-compras/)**
+
 A demonstração usa uma papelaria fictícia e dados sintéticos. O cálculo é determinístico e segue uma regra simples de revisão periódica. Ainda não foi validado com comerciantes, e o projeto não mede impacto financeiro ou operacional.
 
 ## Demonstração
