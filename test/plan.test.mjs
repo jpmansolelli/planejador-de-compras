@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import {readFileSync} from 'node:fs'
 import {calculate} from '../src/domain/plan.ts'
 import {readData,exportPlan} from '../src/domain/csv.ts'
-const file = n=>readFileSync(new URL('../docs/'+n+'.csv',import.meta.url),'utf8')
+const file = n=>readFileSync(new URL('../examples/'+n+'.csv',import.meta.url),'utf8')
 const stock=file('estoque'), sales=file('vendas'), data=readData(stock,sales)
 const defaults={start:'2026-10-01',end:'2026-10-28',ref:'2026-10-28',covered:true,lead:3,review:7,safety:2,change:20,delay:2}
 const run = p=>calculate(data.stock,data.sales,{...defaults,...p})
@@ -36,4 +36,3 @@ test('Exportação mantém originais e protege campos textuais',()=>{
  const csv=exportPlan(p,defaults,new Map([['001',50]]))
  assert.ok(csv.includes('"001","\'=1+1","20","140","40","64","50","sim"'))
 })
-

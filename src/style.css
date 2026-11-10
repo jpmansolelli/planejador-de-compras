@@ -1,0 +1,202 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: #f6f5ef;
+  color: #172f2b;
+  font:
+    16px/1.5 'Segoe UI',
+    system-ui,
+    sans-serif;
+}
+header {
+  background: #123e35;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px max(5vw, 20px);
+}
+header span,
+small {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+}
+.brand {
+  font-size: 1.3rem;
+}
+main {
+  width: min(1120px, 92%);
+  margin: auto;
+}
+.intro,
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+.intro {
+  padding: 48px 0 22px;
+}
+h1,
+h2,
+p {
+  margin: 0 0 12px;
+}
+h1 {
+  font:
+    clamp(2.7rem, 6vw, 5rem) / 1.1 Georgia,
+    serif;
+  letter-spacing: -0.05em;
+}
+small {
+  color: #46685b;
+  font-weight: 700;
+}
+button,
+select,
+input {
+  font: inherit;
+}
+button {
+  background: #17533f;
+  color: white;
+  padding: 11px 18px;
+  border-radius: 7px;
+  border: 0;
+  font-weight: 650;
+  cursor: pointer;
+}
+button:hover {
+  background: #093426;
+}
+a {
+  color: #16563e;
+}
+details,
+article,
+.product {
+  background: #fff;
+  border: 1px solid #d4dacf;
+  border-radius: 9px;
+  padding: 15px 20px;
+  margin: 12px 0;
+}
+summary {
+  font-weight: 650;
+  cursor: pointer;
+}
+details p,
+form {
+  margin-top: 14px;
+}
+form,
+.metrics,
+.product {
+  display: grid;
+  gap: 14px;
+}
+form,
+.metrics {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+input:not([type='checkbox']),
+select {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #9daea3;
+  background: white;
+  border-radius: 5px;
+  color: inherit;
+}
+.wide {
+  grid-column: 1/-1;
+}
+.metrics strong {
+  display: block;
+  font:
+    2.8rem Georgia,
+    serif;
+}
+.metrics article:first-child {
+  background: #ddede2;
+}
+.bar {
+  margin: 24px 0 8px;
+}
+#filter {
+  max-width: 260px;
+}
+.product {
+  grid-template-columns: 2fr repeat(3, 1fr);
+  align-items: center;
+}
+.product details {
+  grid-column: 1/-1;
+  margin: 0;
+  border: 0;
+  border-top: 1px solid #ddd;
+  border-radius: 0;
+  padding: 8px 0 0;
+}
+.product span {
+  display: block;
+  font-size: 0.85rem;
+  color: #52655d;
+}
+.product strong {
+  font-size: 1.15rem;
+}
+#message {
+  white-space: pre-line;
+  color: #903619;
+}
+footer {
+  margin: 42px 0;
+  padding: 20px 0;
+  border-top: 1px solid #bdcabc;
+  font-size: 0.85rem;
+}
+button:focus-visible,
+summary:focus-visible,
+input:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 3px solid #bb710b;
+  outline-offset: 3px;
+}
+@media (max-width: 650px) {
+  .intro,
+  .bar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .intro {
+    padding-top: 28px;
+  }
+  .product {
+    grid-template-columns: 1fr 1fr;
+  }
+  .metrics {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+  }
+  .metrics article {
+    padding: 8px;
+    font-size: 0.78rem;
+  }
+  .metrics strong {
+    font-size: 2rem;
+  }
+  header span {
+    font-size: 0.66rem;
+  }
+}
