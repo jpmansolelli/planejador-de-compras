@@ -17,11 +17,13 @@ const filters = [
 function Product({
   row: r,
   days,
+  params,
   edit,
   onEdit,
 }: {
   row: Row
   days: number
+  params: Parameters
   edit?: number
   onEdit: Edit
 }) {
@@ -74,24 +76,78 @@ function Product({
         </span>
       </label>
       <details>
-        <summary>Memória de cálculo</summary>
+        <summary>Como chegamos à sugestão?</summary>
         {r.base && r.sim ? (
-          <p>
-            {format(r.sold)} un. vendidas em {days} dias. Média de{' '}
-            {format(r.base.mean)} un./dia. Alvo base de {units(r.base.target)} e
-            saldo de {units(r.balance)}. Cobertura base de{' '}
-            {format(r.base.coverage!)} dias. No cenário, média de{' '}
-            {format(r.sim.mean)} un./dia, alvo de {units(r.sim.target)} e
-            cobertura{' '}
-            {r.sim.coverage === null
-              ? 'indisponível'
-              : 'de ' + format(r.sim.coverage) + ' dias'}
-            .
-          </p>
+          <div className="calculation-details">
+            <p className="calculation-intro">
+              A conta estima quanto manter em estoque para cobrir o prazo de
+              entrega, a próxima revisão e a margem de segurança. O cenário
+              atual {params.change === 0
+                ? 'mantém a demanda observada'
+                : `altera a demanda em ${params.change}%`}
+              {params.delay > 0
+                ? ` e acrescenta ${params.delay} dias de atraso`
+                : ' e não inclui atraso adicional'}.
+            </p>
+            <ol className="calculation-steps">
+              <li>
+                <span>1</span>
+                <p>
+                  <strong>Ritmo de vendas</strong>
+                  <small>
+                    {format(r.sold)} un. vendidas em {days} dias. Neste cenário,
+                    isso equivale a {format(r.sim.mean)} un. por dia.
+                  </small>
+                </p>
+              </li>
+              <li>
+                <span>2</span>
+                <p>
+                  <strong>Estoque para cobrir o período</strong>
+                  <small>
+                    A meta é {units(r.sim.target)} para cobrir {params.lead}{' '}
+                    dias de entrega, {params.review} dias até a próxima revisão
+                    e {params.safety} dias extras de segurança
+                    {params.delay > 0
+                      ? `, mais ${params.delay} dias de atraso simulado`
+                      : ''}. Arredondamos para cima.
+                  </small>
+                </p>
+              </li>
+              <li>
+                <span>3</span>
+                <p>
+                  <strong>Desconto do saldo atual</strong>
+                  <small>
+                    A meta é {units(r.sim.target)} e há {units(r.balance)} em
+                    estoque. {r.sim.buy > 0
+                      ? `Sugerimos comprar ${format(r.sim.buy)} unidades.`
+                      : 'O saldo já cobre a meta; nenhuma compra é sugerida.'}
+                  </small>
+                </p>
+              </li>
+            </ol>
+            <div className="calculation-comparison">
+              <span>Comparação</span>
+              <p>
+                Plano base: <strong>{units(r.base.buy)}</strong>
+                <span aria-hidden="true"> · </span>
+                Cenário atual: <strong>{units(r.sim.buy)}</strong>
+              </p>
+            </div>
+            {r.sim.risk && (
+              <p className="calculation-warning">
+                Com o saldo atual, este produto pode acabar antes da reposição.
+                Confira o prazo com o fornecedor.
+              </p>
+            )}
+          </div>
         ) : (
-          <p>
-            Saldo de {units(r.balance)}. Sem vendas no período para estimar a
-            demanda. A quantidade final pode ser preenchida manualmente.
+          <p className="calculation-intro">
+            Não há vendas registradas para este produto no período analisado.
+            Sem esse histórico, não dá para estimar um ritmo de vendas nem
+            calcular uma compra sugerida. Você pode informar a quantidade final
+            manualmente.
           </p>
         )}
       </details>
@@ -146,10 +202,16 @@ export function Results({ plan, params, edits, onEdit }: Props) {
             {buys === 0 && 'Nenhuma compra automática sugerida.'}
           </p>
         </div>
-        <button onClick={download}>Exportar plano CSV</button>
+        <button className="secondary-button export-button" onClick={download}>
+          <svg aria-hidden="true" viewBox="0 0 20 20" fill="none">
+            <path d="M10 2.5v9m0 0 3.5-3.5M10 11.5 6.5 8M3.5 12.5v3A1.5 1.5 0 0 0 5 17h10a1.5 1.5 0 0 0 1.5-1.5v-3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          Exportar plano CSV
+        </button>
       </div>
-      <label>
-        Exibir
+      <label className="filter-control" htmlFor="filter">
+        <span>Exibir</span>
+        <span className="select-wrap">
         <select
           id="filter"
           value={filter}
@@ -161,12 +223,17 @@ export function Results({ plan, params, edits, onEdit }: Props) {
             </option>
           ))}
         </select>
+        <svg aria-hidden="true" viewBox="0 0 16 16" fill="none">
+          <path d="m4 6 4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        </span>
       </label>
       {visible.map((r) => (
         <Product
           key={r.id}
           row={r}
           days={plan.days}
+          params={params}
           edit={edits.get(r.id)}
           onEdit={onEdit}
         />

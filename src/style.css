@@ -136,15 +136,34 @@ input:not([type=checkbox]) { min-height: 39px; width: 100%; padding: 8px 10px; b
 .product label { color: #526575; font-size: 10px; }
 .product input { margin-top: 5px; }
 .product details { grid-column: 1/-1; margin: 0; padding: 9px 0 0; border: 0; border-top: 1px solid #edf1f4; color: #7d8c98; font-size: 11px; }
-.product details p { margin: 9px 0 0; line-height: 1.6; }
-.product details summary { color: #1688b2; cursor: pointer; font-size: 10px; font-weight: 600; }
+.product details summary { width: fit-content; color: #1688b2; cursor: pointer; font-size: 11px; font-weight: 700; }
+.calculation-details { max-width: 800px; margin-top: 13px; }
+.calculation-intro { margin: 0; color: #667c8b; font-size: 11px; line-height: 1.65; }
+.calculation-steps { display: grid; gap: 10px; margin: 14px 0; padding: 0; list-style: none; }
+.calculation-steps li { display: flex; align-items: flex-start; gap: 10px; }
+.calculation-steps li > span { display: grid; flex: 0 0 auto; place-items: center; width: 22px; height: 22px; border-radius: 50%; color: #087eb6; background: var(--blue-pale); font-size: 10px; font-weight: 700; }
+.calculation-steps li p { display: grid; gap: 3px; margin: 0; }
+.calculation-steps strong { color: #4b6070; font-size: 11px; }
+.calculation-steps small { color: #7d8c98; font-size: 10px; line-height: 1.55; }
+.calculation-comparison { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 12px; border: 1px solid #e2edf2; border-radius: 6px; background: #f8fbfc; font-size: 10px; }
+.calculation-comparison > span { color: #81909b; }
+.calculation-comparison p { margin: 0; color: #526879; }
+.calculation-comparison strong { color: #344d5e; }
+.calculation-warning { margin: 10px 0 0; padding: 9px 11px; border: 1px solid #f5e3c5; border-radius: 6px; color: #94621c; background: #fffaf1; font-size: 10px; line-height: 1.5; }
 .metrics { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; }
 .metrics article { display: grid; gap: 12px; margin: 0; padding: 17px; border: 1px solid var(--line); border-radius: 8px; color: #718291; background: #fff; font-size: 10px; }
 .metrics strong { color: #30495b; font: 700 27px Inter,sans-serif; }
-.bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 20px 0 9px; }
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 20px 0 12px; }
 .bar h2 { margin: 0 0 5px; color: #35495a; font: 700 16px Inter,sans-serif; }
 .bar p { margin: 0; color: #8b99a4; font-size: 10px; }
-#filter { width: min(260px,100%); margin: 5px 0 12px; }
+.export-button { flex: 0 0 auto; }
+.export-button svg { width: 16px; height: 16px; }
+.filter-control { display: flex; align-items: center; gap: 10px; width: fit-content; margin: 0 0 12px; color: #718291; font-size: 11px; font-weight: 600; }
+.select-wrap { position: relative; display: inline-flex; align-items: center; }
+.select-wrap select { min-width: 225px; min-height: 39px; padding: 8px 36px 8px 11px; appearance: none; border: 1px solid #dce5eb; border-radius: 6px; color: #435a6b; background: #fff; font: inherit; font-weight: 500; cursor: pointer; transition: border-color .16s ease, box-shadow .16s ease; }
+.select-wrap select:hover { border-color: #b8cbd5; }
+.select-wrap select:focus-visible { outline: 3px solid #63c9eb; outline-offset: 2px; border-color: #54b9da; }
+.select-wrap svg { position: absolute; right: 11px; width: 15px; height: 15px; color: #80919d; pointer-events: none; }
 .notice, .scenario-note { display: flex; align-items: center; gap: 9px; padding: 12px 14px; border: 1px solid #dceff6; border-radius: 7px; color: #648190; background: #f5fcfe; font-size: 11px; }
 .notice p, .scenario-note p { margin: 0; }
 .notice-dot { width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%; background: #09a9db; }
@@ -216,6 +235,8 @@ input:not([type=checkbox]) { min-height: 39px; width: 100%; padding: 8px 10px; b
   .metrics strong { font-size: 21px; }
   .bar { align-items: stretch; flex-direction: column; }
   .bar > button { width: 100%; }
+  .filter-control { align-items: stretch; flex-direction: column; width: 100%; gap: 6px; }
+  .select-wrap, .select-wrap select { width: 100%; }
   .scenario-metrics { grid-template-columns: 1fr 1fr; }
   .comparison-row { grid-template-columns: minmax(90px,1.2fr) 1fr 1fr; gap: 8px; }
   .comparison-row strong { font-size: 10px; }
