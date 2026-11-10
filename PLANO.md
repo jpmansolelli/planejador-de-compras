@@ -16,7 +16,7 @@ Abrir a demonstração em um clique ou baixar os dois modelos e importar os pró
 - Exemplo de aceitação: 140 unidades em 28 dias, saldo 20, prazo 3, revisão 7 e segurança 2 resultam em média 5, alvo 60 e compra 40. Com +20% e dois dias de atraso, o alvo passa a 84 e a compra a 64.
 
 ## Arquitetura e publicação
-Frontend estático em português, módulos separados de validação, reposição, cenário, exportação e interface. Preferência por módulos JavaScript com contratos JSDoc, sem dependências de execução ou compilação. Testes do núcleo com o executor nativo do Node. Assets relativos em docs/ permitem publicação a partir de main e /docs. Arquivos do visitante ficam em memória. Renderizar campos como texto e neutralizar fórmulas em campos textuais de CSV. Publicar somente exemplos sintéticos. O cálculo é determinístico e o uso de IA se concentra no desenvolvimento.
+Frontend estático em português, módulos separados de validação, reposição, cenário, exportação e interface. Após revisão do autor, o frontend usa React com TypeScript estrito e componentes TSX. O Vite compila o site para distribuição estática. Testes do núcleo com o executor nativo do Node. O workflow do GitHub Actions testa a aplicação e publica o build de dist/ com caminhos relativos. Arquivos do visitante ficam em memória. Renderizar campos como texto e neutralizar fórmulas em campos textuais de CSV. Publicar somente exemplos sintéticos. O cálculo é determinístico e o uso de IA se concentra no desenvolvimento.
 
 ## Backlog priorizado
 | Marco | Entrega verificável |
