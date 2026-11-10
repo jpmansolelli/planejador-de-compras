@@ -135,7 +135,6 @@ export function App() {
     <>
       <header>
         <b className="brand">▤ &nbsp;Reposição</b>
-        <span>Portfólio AI Builder</span>
       </header>
       <main>
         <section className="intro">
@@ -190,9 +189,8 @@ export function App() {
           <Workspace key={source.key} data={source.data} demo={source.demo} />
         )}
         <footer>
-          Projeto de portfólio desenvolvido com apoio do Codex. A reposição usa
-          regras determinísticas de revisão periódica. Os efeitos em operações
-          reais ainda não foram medidos.
+          Cálculos determinísticos de reposição. Resultados ainda não validados
+          com comerciantes.
         </footer>
       </main>
     </>
