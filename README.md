@@ -1,40 +1,57 @@
-# Reposição · Planejador de compras
+# Reposição
 
-Demonstração de portfólio para quem prepara compras em um pequeno comércio. Abrir o site e escolher **Experimentar demonstração** carrega uma papelaria fictícia com referência em 28/10/2026. A ferramenta também lê arquivos do visitante diretamente na memória do navegador.
+Aplicação web para apoiar a revisão de compras de um pequeno comércio. A pessoa responsável confere vendas e saldo atual, analisa uma sugestão por produto, simula mudanças na demanda e exporta o plano revisado.
 
-## Executar e verificar
+A demonstração usa uma papelaria fictícia e dados sintéticos. O cálculo é determinístico e segue uma regra simples de revisão periódica. Ainda não foi validado com comerciantes, e o projeto não mede impacto financeiro ou operacional.
 
-Use Node 24.12 ou superior e pnpm 11.25.0. Na raiz do repositório:
+## Demonstração
+
+A demonstração carrega um exemplo reproduzível com referência em 28/10/2026. Para o caderno pontilhado, 140 unidades vendidas em 28 dias e saldo de 20 unidades resultam em uma sugestão de compra de 40. Ao simular demanda 20% maior e dois dias adicionais de prazo, a sugestão passa a 64 unidades.
+
+## O que é possível fazer
+
+- Explorar a demonstração com período e parâmetros editáveis.
+- Importar vendas e saldo de estoque em arquivos CSV.
+- Conferir validações, produtos sem histórico e risco durante o prazo.
+- Simular variação de demanda e atraso de entrega.
+- Ajustar quantidades manualmente e exportar o plano em CSV.
+
+Os dados importados permanecem na memória do navegador e são descartados ao recarregar a página.
+
+## Regra de reposição
+
+O estoque-alvo corresponde à média diária de vendas multiplicada pelos dias de prazo, intervalo entre revisões e segurança. A compra sugerida é a diferença entre o alvo e o saldo atual, limitada a zero e arredondada para cima no cálculo do alvo.
+
+A regra pressupõe que não existem pedidos em trânsito, reservas ou restrições de lote. Dias sem registros de venda contam como zero somente após a confirmação de que o histórico cobre todo o período. Produtos sem venda no período não recebem sugestão automática.
+
+Consulte [o plano e os critérios de aceitação](PLANO.md) para detalhes das regras, premissas e backlog.
+
+## Arquivos CSV
+
+Baixe os [modelos de estoque](examples/estoque.csv) e [vendas](examples/vendas.csv). Use CSV UTF-8, vírgulas, cabeçalho e datas no formato `AAAA-MM-DD`. Cada arquivo pode ter até 5 MB.
+
+O arquivo de estoque usa `produto_id,produto_nome,estoque_atual`. O arquivo de vendas usa `data,produto_id,quantidade`. Os identificadores são texto, portanto IDs com zeros iniciais devem ser preservados. Vendas exigem quantidades inteiras positivas. O saldo aceita zero. Linhas de venda repetidas são somadas, por isso confira duplicações antes de importar.
+
+## Tecnologias
+
+React e TypeScript compõem a interface. O Vite gera a versão estática do site, e os cálculos e validações ficam separados da apresentação em `src/domain/`. A aplicação funciona no navegador e não depende de API ou serviço pago.
+
+## Executar localmente
+
+Requer Node.js 24.12 ou superior e pnpm 11.25.0.
 
 ```sh
 pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Abra o endereço local informado pelo Vite. Para reproduzir a verificação de entrega:
+Para conferir os cálculos, a checagem de tipos e o build de produção:
 
 ```sh
 pnpm test
 pnpm run build
-pnpm preview
 ```
 
-A interface usa componentes React em TSX. Os módulos TypeScript em `src/domain/` concentram o cálculo e as regras de CSV. O build verifica tipos em modo estrito e gera os arquivos estáticos em `dist/`. O visitante precisa apenas de um navegador.
+## Histórico
 
-## Usar arquivos próprios
-Baixe os [modelos de estoque](examples/estoque.csv) e [vendas](examples/vendas.csv). Use UTF-8 com vírgulas, cabeçalho idêntico e datas AAAA-MM-DD. IDs são textuais. Vendas exigem unidades inteiras positivas. O saldo aceita zero. Cada arquivo comporta até 5 MB. Linhas de venda repetidas contam como transações distintas. Confira duplicações antes da importação. Recarregar descarta os dados. Ao abrir o CSV exportado em planilha, importe a coluna produto_id como texto para preservar zeros iniciais.
-
-## Regras e decisões
-Consulte [o plano e os critérios de aceitação](PLANO.md). O estoque-alvo arredonda para cima a média diária multiplicada pelos dias de entrega, revisão e segurança. O saldo disponível reduz a quantidade a comprar. Na demonstração, o caderno tem sugestão base de 40 unidades. Ao aplicar demanda +20% e atraso de 2 dias a sugestão passa a 64. Um produto sem histórico admite ajuste manual. Para voltar ao valor calculado, limpe o campo de quantidade final.
-
-## Publicação e segurança
-No repositório público, selecione Settings → Pages → Build and deployment → Source → GitHub Actions. O workflow verifica pull requests e publica o conteúdo de dist após testes e build bem-sucedidos na main. Os assets usam caminhos relativos. O projeto dispensa chaves, APIs pagas e arquivos de ambiente. A página utiliza arquivos estáticos da mesma origem. Dados importados são renderizados como texto. O exportador neutraliza prefixos de fórmulas em campos textuais.
-
-## Uso do Codex e evidências
-O Codex implementou o núcleo determinístico, o fluxo de revisão, as validações e os testes a partir do briefing do autor. O produto não executa inferência de IA. O plano registra etapas de desenvolvimento e evolução. Ainda não houve experimento com comerciantes nem medição de economia de tempo. Para um ensaio, use os mesmos CSVs fornecidos, prepare o plano manualmente e na ferramenta, registre tempo, erros e ordem de execução e relate o efeito de familiaridade.
-
-## Evolução do projeto
-
-Consulte `git log --oneline --reverse` para acompanhar o protótipo, a migração do núcleo, a interface React e a publicação. Cada incremento tem um objetivo revisável. A mudança para React e TypeScript veio da revisão do autor.
-
-O teste da jornada foi executado localmente no Edge com viewport de 390 × 844 e o build servido em um subdiretório. O exemplo começou com 40 unidades, passou a 64 no cenário e exportou 51 após ajuste manual. Restaurar o exemplo e importar novamente os dois arquivos retornou a sugestão de 40.
+O histórico do Git registra a evolução do protótipo, a tipagem do núcleo, a migração da interface para React e a preparação da publicação.
